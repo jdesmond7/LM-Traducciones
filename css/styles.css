@@ -307,7 +307,7 @@ h1, h2, h3, h4 {
     border-radius: 100px;
     font-size: 0.8125rem;
     font-weight: 500;
-    color: var(--color-primary);
+    color: var(--color-gray-800);
     letter-spacing: 0.05em;
     text-transform: uppercase;
     box-shadow: var(--shadow-sm);
@@ -337,7 +337,7 @@ h1, h2, h3, h4 {
 
 .hero-description {
     font-size: 1.125rem;
-    color: var(--color-gray-500);
+    color: var(--color-gray-800);
     max-width: 600px;
     margin: 0 auto var(--space-xl);
     line-height: 1.8;
