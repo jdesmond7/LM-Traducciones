@@ -4,10 +4,22 @@
 
 /* CSS Variables */
 :root {
+    /* Golden Chestnut Palette */
+    --golden-chestnut-100: #F9F3ED;
+    --golden-chestnut-200: #EEDCCA;
+    --golden-chestnut-300: #E3C4A6;
+    --golden-chestnut-400: #D7AC82;
+    --golden-chestnut-500: #D1A171;
+    --golden-chestnut-600: #C6894D;
+    --golden-chestnut-700: #9E6E3E;
+    --golden-chestnut-800: #77522E;
+    --golden-chestnut-900: #4F371F;
+    --golden-chestnut-950: #281B0F;
+
     /* Colors - Elegant Navy & Gold palette */
-    --color-primary: #1a2744;
-    --color-primary-light: #2d3f5e;
-    --color-primary-dark: #0f1829;
+    --color-primary: var(--golden-chestnut-600);
+    --color-primary-light: var(--golden-chestnut-500);
+    --color-primary-dark: var(--golden-chestnut-700);
     --color-accent: #c9a55c;
     --color-accent-light: #e5c98a;
     --color-accent-dark: #a68642;
