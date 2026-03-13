@@ -18,22 +18,32 @@
 
     /* Colors - Elegant Navy & Gold palette */
     --color-primary: var(--golden-chestnut-600);
-    --color-primary-light: var(--golden-chestnut-500);
-    --color-primary-dark: var(--golden-chestnut-700);
+    --color-primary-light: var(--golden-chestnut-400);
+    --color-primary-dark: var(--golden-chestnut-800);
     --color-accent: #c9a55c;
     --color-accent-light: #e5c98a;
     --color-accent-dark: #a68642;
     
+    /* Seashell Palette */
+    --seashell-200: #FCF7F6;
+    --seashell-300: #FAF3F1;
+    --seashell-400: #F9F1EF;
+    --seashell-600: #F7EBE8;
+    --seashell-700: #DED4D1;
+    --seashell-800: #635E5D;
+    --seashell-900: #312F2E;
+    --seashell-950: #191817;
+
     /* Neutrals */
     --color-white: #ffffff;
-    --color-cream: #faf8f5;
-    --color-gray-100: #f5f3f0;
-    --color-gray-200: #e8e4df;
-    --color-gray-300: #d4cfc7;
-    --color-gray-400: #9c9690;
-    --color-gray-500: #6b655e;
-    --color-gray-600: #4a453f;
-    --color-text: #2c2825;
+    --color-cream: var(--seashell-200);
+    --color-gray-100: var(--seashell-300);
+    --color-gray-200: var(--seashell-400);
+    --color-gray-300: var(--seashell-600);
+    --color-gray-400: var(--seashell-700);
+    --color-gray-500: var(--seashell-800);
+    --color-gray-600: var(--seashell-900);
+    --color-text: var(--seashell-950);
     
     /* Typography */
     --font-display: 'Cormorant Garamond', Georgia, serif;
