@@ -18,19 +18,14 @@ document.addEventListener('DOMContentLoaded', () => {
  */
 function initNavbar() {
     const navbar = document.getElementById('navbar');
-    let lastScroll = 0;
+    if (!navbar) return;
 
     window.addEventListener('scroll', () => {
-        const currentScroll = window.pageYOffset;
-
-        // Add scrolled class for visual change
-        if (currentScroll > 50) {
+        if (window.pageYOffset > 50) {
             navbar.classList.add('scrolled');
         } else {
             navbar.classList.remove('scrolled');
         }
-
-        lastScroll = currentScroll;
     });
 }
 
@@ -40,6 +35,8 @@ function initNavbar() {
 function initMobileMenu() {
     const toggle = document.getElementById('nav-toggle');
     const menu = document.getElementById('nav-menu');
+    if (!toggle || !menu) return;
+
     const links = menu.querySelectorAll('.nav-link');
 
     toggle.addEventListener('click', () => {
@@ -48,7 +45,6 @@ function initMobileMenu() {
         document.body.style.overflow = menu.classList.contains('active') ? 'hidden' : '';
     });
 
-    // Close menu when clicking a link
     links.forEach(link => {
         link.addEventListener('click', () => {
             toggle.classList.remove('active');
@@ -57,7 +53,6 @@ function initMobileMenu() {
         });
     });
 
-    // Close menu when clicking outside
     document.addEventListener('click', (e) => {
         if (!menu.contains(e.target) && !toggle.contains(e.target)) {
             toggle.classList.remove('active');

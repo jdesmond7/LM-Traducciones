@@ -16,27 +16,9 @@
     <link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
-    <!-- Navigation -->
-    <nav class="navbar" id="navbar">
-        <div class="nav-container">
-            <a href="#" class="nav-logo">
-                <span class="logo-text">LM</span>
-                <span class="logo-divider"></span>
-                <span class="logo-subtitle">Traductora Certificada</span>
-            </a>
-            <ul class="nav-menu" id="nav-menu">
-                <li><a href="sobre-mi.html" class="nav-link">Sobre mí</a></li>
-                <li><a href="servicios.html" class="nav-link">Servicios</a></li>
-                <li><a href="tarifas.html" class="nav-link">Tarifas</a></li>
-                <li><a href="faqs.html" class="nav-link nav-cta">FAQs</a></li>
-            </ul>
-            <button class="nav-toggle" id="nav-toggle" aria-label="Toggle menu">
-                <span></span>
-                <span></span>
-                <span></span>
-            </button>
-        </div>
-    </nav>
+    <!-- Navigation (component) -->
+    <div id="navbar-root"></div>
+    <script src="js/components/navbar.js"></script>
 
     <!-- Hero Section -->
     <header class="hero" id="inicio">
@@ -50,8 +32,7 @@
                     <span>Dra. Liz Maleni Uribe Martínez - Perito Traductora</span>
                 </div>
                 <h1 class="hero-title">
-                    <span class="title-line">Traducciones </span>
-                    <span class="title-line accent">Oficiales</span>
+                    <span class="title-line">Traducciones <em class="accent">Oficiales</em></span>
                     <span class="title-line">con Validez Legal</span>
                 </h1>
                 <p class="hero-description">

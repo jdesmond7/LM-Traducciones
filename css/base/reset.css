@@ -1,0 +1,127 @@
+/* ================================================
+   BASE: Variables, Reset & Base Elements
+   ================================================ */
+
+/* CSS Variables */
+:root {
+    /* Golden Chestnut Palette */
+    --golden-chestnut-100: #F9F3ED;
+    --golden-chestnut-200: #EEDCCA;
+    --golden-chestnut-300: #E3C4A6;
+    --golden-chestnut-400: #D7AC82;
+    --golden-chestnut-500: #D1A171;
+    --golden-chestnut-600: #C6894D;
+    --golden-chestnut-700: #9E6E3E;
+    --golden-chestnut-800: #77522E;
+    --golden-chestnut-900: #4F371F;
+    --golden-chestnut-950: #281B0F;
+
+    /* Colors - Elegant Navy & Gold palette */
+    --color-primary: var(--golden-chestnut-600);
+    --color-primary-light: var(--golden-chestnut-400);
+    --color-primary-dark: var(--golden-chestnut-950);
+    --color-accent: var(--golden-chestnut-300);
+    --color-accent-light: var(--golden-chestnut-200);
+    --color-accent-dark: var(--golden-chestnut-700);
+    
+    /* Seashell Palette */
+    --seashell-200: #FCF7F6;
+    --seashell-300: #FAF3F1;
+    --seashell-400: #F9F1EF;
+    --seashell-600: #F7EBE8;
+    --seashell-700: #DED4D1;
+    --seashell-800: #635E5D;
+    --seashell-900: #312F2E;
+    --seashell-950: #191817;
+
+    /* Neutrals */
+    --color-white: #ffffff;
+    --color-cream: var(--seashell-200);
+    --color-gray-100: var(--seashell-300);
+    --color-gray-200: var(--seashell-400);
+    --color-gray-300: var(--seashell-600);
+    --color-gray-400: var(--seashell-700);
+    --color-gray-500: var(--seashell-800);
+    --color-gray-600: var(--seashell-900);
+    --color-text: var(--seashell-950);
+    
+    /* Typography */
+    --font-display: 'Cormorant Garamond', Georgia, serif;
+    --font-body: 'Outfit', -apple-system, BlinkMacSystemFont, sans-serif;
+    
+    /* Spacing */
+    --space-xs: 0.5rem;
+    --space-sm: 1rem;
+    --space-md: 1.5rem;
+    --space-lg: 2rem;
+    --space-xl: 3rem;
+    --space-2xl: 5rem;
+    --space-3xl: 8rem;
+    
+    /* Transitions */
+    --transition-fast: 0.2s ease;
+    --transition-base: 0.3s ease;
+    --transition-slow: 0.5s ease;
+    
+    /* Shadows */
+    --shadow-sm: 0 2px 8px rgba(26, 39, 68, 0.06);
+    --shadow-md: 0 4px 20px rgba(26, 39, 68, 0.08);
+    --shadow-lg: 0 8px 40px rgba(26, 39, 68, 0.12);
+    
+    /* Border Radius */
+    --radius-sm: 4px;
+    --radius-md: 8px;
+    --radius-lg: 16px;
+    --radius-xl: 24px;
+}
+
+/* Reset & Base */
+*, *::before, *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 80px;
+}
+
+body {
+    font-family: var(--font-body);
+    font-size: 16px;
+    line-height: 1.6;
+    color: var(--color-text);
+    background-color: var(--color-cream);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+    transition: var(--transition-base);
+}
+
+ul {
+    list-style: none;
+}
+
+button {
+    font-family: inherit;
+    cursor: pointer;
+    border: none;
+    background: none;
+}
+
+input, textarea, select {
+    font-family: inherit;
+    font-size: inherit;
+}
+
