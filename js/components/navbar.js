@@ -14,14 +14,14 @@ const NavbarComponent = (() => {
     const CONFIG = {
         logo: {
             text: 'LM',
-            subtitle: 'Traductora Certificada',
+            subtitle: 'Perito Traductora',
             href: 'index.html',
         },
         links: [
             { label: 'Sobre mí',  href: 'sobre-mi.html' },
             { label: 'Servicios', href: 'servicios.html' },
             { label: 'Tarifas',   href: 'tarifas.html' },
-            { label: 'FAQs',      href: 'faqs.html' },
+            { label: 'FAQs',      href: 'preguntas-frecuentes.html' },
             { label: 'Solicitar traducción', href: '#contacto', isCta: true },
         ],
     };

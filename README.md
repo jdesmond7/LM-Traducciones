@@ -95,11 +95,25 @@ Clases disponibles:
 6. **Smooth scroll** para navegacion interna
 7. **Carrusel de logos** con scroll infinito
 
-## Como usar
+## Como usar (con backend propio)
 
-1. Abre `index.html` en un navegador
-2. No requiere servidor local (funciona con file://)
-3. Para produccion, sube todos los archivos a tu hosting
+1. Instala dependencias:
+   ```bash
+   npm install
+   ```
+2. Crea tu archivo `.env` basado en `.env.example` y configura SMTP.
+3. Inicia el servidor:
+   ```bash
+   npm start
+   ```
+4. Abre el sitio en `http://localhost:3000`.
+
+### Variables de entorno
+
+- `SMTP_HOST`, `SMTP_PORT`, `SMTP_USER`, `SMTP_PASS`: credenciales del servidor SMTP.
+- `MAIL_FROM`: remitente del correo (opcional, por defecto usa `SMTP_USER`).
+- `MAIL_TO`: correo principal que recibe el formulario.
+- `MAIL_CC`: copia opcional.
 
 ## Personalizacion
 
@@ -123,7 +137,7 @@ links: [
     { label: 'Sobre mi',  href: 'sobre-mi.html' },
     { label: 'Servicios', href: 'servicios.html' },
     { label: 'Tarifas',   href: 'tarifas.html' },
-    { label: 'FAQs',      href: 'faqs.html' },
+    { label: 'FAQs',      href: 'preguntas-frecuentes.html' },
     { label: 'Solicitar traduccion', href: '#contacto', isCta: true },
 ],
 ```

@@ -1,0 +1,27 @@
+{
+  "name": "lm-landing",
+  "version": "1.0.0",
+  "description": "Landing page profesional para **Liz Maleni - Traductora Certificada**",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jdesmond7/LM-Traducciones.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/jdesmond7/LM-Traducciones/issues"
+  },
+  "homepage": "https://github.com/jdesmond7/LM-Traducciones#readme",
+  "dependencies": {
+    "dotenv": "^17.3.1",
+    "express": "^5.2.1",
+    "multer": "^2.1.1",
+    "nodemailer": "^8.0.2"
+  }
+}
