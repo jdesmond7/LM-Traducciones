@@ -22,15 +22,8 @@
     <main>
         <!-- Hero -->
         <section class="about-hero" id="inicio">
-            <div class="about-hero-image fade-in">
-                <img src="images/sobre-mi.jpg" alt="Dra. Liz Maleni Uribe Martinez, Perito Traductora Certificada">
-            </div>
-        </section>
-
-        <!-- Propuesta de valor -->
-        <section class="about-value">
             <div class="container">
-                <div class="about-value-layout">
+                <div class="about-hero-layout">
                     <article class="about-intro fade-in">
                         <h1 class="about-title">Dra. Liz Maleni Uribe Martínez</h1>
                         <p class="about-role">Perito Traductora Certificada en Nuevo León</p>
@@ -39,8 +32,19 @@
                             en contextos jurídicos, técnicos y académicos.
                         </p>
                     </article>
-                    <article class="about-value-box fade-in delay-1">
-                    <h1 class="section-title">Mi propuesta de valor</h1>
+                    <div class="about-hero-image fade-in">
+                        <img src="images/LM-Hero-sobremi.png" alt="Dra. Liz Maleni Uribe Martinez, Perito Traductora Certificada">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Propuesta de valor -->
+        <section class="about-value">
+            <div class="container">
+                <div class="about-value-layout">
+                    <article class="about-value-content fade-in">
+                    <h2 class="section-title">Mi propuesta de valor</h2>
                     <p class="about-value-text">
                         La traducción no es solo trasladar palabras, es garantizar que tus documentos tengan plena validez legal
                         y reflejen con exactitud cada término, cláusula e intención. Ese es mi compromiso contigo.
@@ -92,7 +96,7 @@
 
                 <div class="services-grid">
                     <article class="service-card fade-in" data-delay="0">
-                        <h1 class="service-title">Docente Universitaria</h1>
+                        <h class="service-title">Docente Universitaria</h3>
                         <p class="service-description">
                             Formación de traductores en traducción legal en la UANL.
                         </p>
@@ -180,49 +184,9 @@
         <div id="contact-section-root"></div>
     </main>
 
-    <!-- Footer -->
-    <footer class="footer">
-        <div class="container">
-            <div class="footer-content">
-                <div class="footer-brand">
-                    <a href="index.html" class="footer-logo">
-                        <span class="logo-text">LM</span>
-                        <span class="logo-divider"></span>
-                        <span class="logo-subtitle">Traductora Certificada</span>
-                    </a>
-                    <p class="footer-tagline">
-                        Traducciones oficiales con validez legal ante autoridades
-                        mexicanas e internacionales.
-                    </p>
-                </div>
-
-                <div class="footer-links">
-                    <div class="footer-column">
-                        <h4>Navegación</h4>
-                        <ul>
-                            <li><a href="index.html#inicio">Inicio</a></li>
-                            <li><a href="sobre-mi.html">Sobre mí</a></li>
-                            <li><a href="tarifas.html">Tarifas</a></li>
-                            <li><a href="preguntas-frecuentes.html">FAQs</a></li>
-                            <li><a href="index.html#proceso">Proceso</a></li>
-                        </ul>
-                    </div>
-                    <div class="footer-column">
-                        <h4>Contacto</h4>
-                        <ul>
-                            <li><a href="https://wa.me/528116009783">WhatsApp</a></li>
-                            <li><a href="mailto:maleni.uribe.mtz@gmail.com">Email</a></li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-
-            <div class="footer-bottom">
-                <p>&copy; 2026 Liz Maleni. Todos los derechos reservados.</p>
-                <p class="footer-legal">Perito Traductora Certificado</p>
-            </div>
-        </div>
-    </footer>
+    <!-- Footer (component) -->
+    <div id="footer-root"></div>
+    <script src="js/components/footer.js"></script>
 
     <script src="js/components/contact-section.js"></script>
     <script src="js/main.js"></script>

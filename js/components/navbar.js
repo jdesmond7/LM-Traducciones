@@ -41,9 +41,11 @@ const NavbarComponent = (() => {
         const linksHTML = CONFIG.links.map(link => {
             const classes = ['nav-link'];
             if (link.isCta) classes.push('nav-cta');
-            if (isActive(link.href)) classes.push('active');
+            const active = isActive(link.href);
+            if (active) classes.push('active');
+            const ariaCurrent = active ? ' aria-current="page"' : '';
 
-            return `<li><a href="${resolvePath(link.href, base)}" class="${classes.join(' ')}">${link.label}</a></li>`;
+            return `<li><a href="${resolvePath(link.href, base)}" class="${classes.join(' ')}"${ariaCurrent}>${link.label}</a></li>`;
         }).join('\n                ');
 
         rootEl.innerHTML = `
