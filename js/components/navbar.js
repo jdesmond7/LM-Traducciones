@@ -14,7 +14,7 @@ const NavbarComponent = (() => {
     const CONFIG = {
         logo: {
             text: 'LM',
-            subtitle: 'Perito Traductora',
+            subtitle: 'Perita Traductora',
             href: 'index.html',
         },
         links: [

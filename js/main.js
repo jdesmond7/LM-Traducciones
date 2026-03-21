@@ -4,13 +4,23 @@
  */
 
 document.addEventListener('DOMContentLoaded', () => {
-    // Initialize all modules
-    initNavbar();
-    initMobileMenu();
-    initScrollAnimations();
-    initLanguageToggle();
-    initSmoothScroll();
-    initContactForm();
+    // Each initializer runs in isolation so one failure (e.g. missing DOM node)
+    // does not skip later setup — notably initContactForm must always attach
+    // submit handler to avoid a native POST and full-page redirect from /api/contact.
+    const safe = (fn, name) => {
+        try {
+            fn();
+        } catch (err) {
+            console.error(`[LM] ${name} failed:`, err);
+        }
+    };
+
+    safe(initNavbar, 'initNavbar');
+    safe(initMobileMenu, 'initMobileMenu');
+    safe(initScrollAnimations, 'initScrollAnimations');
+    safe(initLanguageToggle, 'initLanguageToggle');
+    safe(initSmoothScroll, 'initSmoothScroll');
+    safe(initContactForm, 'initContactForm');
 });
 
 /**
@@ -147,7 +157,8 @@ function initSmoothScroll() {
             
             const target = document.querySelector(href);
             if (target) {
-                const navbarHeight = document.getElementById('navbar').offsetHeight;
+                const navbar = document.getElementById('navbar');
+                const navbarHeight = navbar ? navbar.offsetHeight : 0;
                 const targetPosition = target.getBoundingClientRect().top + window.pageYOffset - navbarHeight;
 
                 window.scrollTo({
@@ -192,7 +203,7 @@ function initContactForm() {
 
         if (!window.lottie && !document.querySelector('script[data-lottie-loader="true"]')) {
             const lottieScript = document.createElement('script');
-            lottieScript.src = 'https://cdnjs.cloudflare.com/ajax/libs/bodymovin/5.12.2/lottie.min.js';
+            lottieScript.src = 'js/vendor/lottie.min.js';
             lottieScript.setAttribute('data-lottie-loader', 'true');
             document.body.appendChild(lottieScript);
         }
@@ -218,6 +229,11 @@ function initContactForm() {
     const fileList = form.querySelector('#file-list');
     const fileFeedback = form.querySelector('#file-feedback');
     const optionalMessageInput = form.querySelector('#optional-message');
+
+    if (!fileList || !fileFeedback || !dropzone || !optionalMessageInput || attachmentInputs.length === 0) {
+        console.warn('[LM] Formulario de contacto incompleto: faltan nodos esperados.');
+        return;
+    }
 
     const ALLOWED_EXTENSIONS = new Set(['.pdf', '.doc', '.docx', '.jpg', '.jpeg', '.png']);
     const MAX_FILES = 3;

@@ -45,6 +45,29 @@
         max-width: 340px;
     }
 
+    .about-importance::before {
+        inset: 0;
+    }
+
+    .about-importance-wrapper {
+        grid-template-columns: 1fr;
+        align-items: center;
+    }
+
+    .about-importance-content {
+        min-height: auto;
+        padding: var(--space-xl) var(--space-lg) var(--space-md);
+        top: 0;
+    }
+
+    .about-importance-image {
+        justify-content: center;
+    }
+
+    .about-importance-image img {
+        max-width: 340px;
+    }
+
     .contact-wrapper {
         grid-template-columns: 1fr;
     }

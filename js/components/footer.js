@@ -11,7 +11,7 @@ const FooterComponent = (() => {
     const CONFIG = {
         logo: {
             text: 'LM',
-            subtitle: 'PERITO TRADUCTORA',
+            subtitle: 'PERITA TRADUCTORA',
             href: 'index.html',
         },
         tagline: 'Traducciones certificadas aceptadas para fines oficiales y legales',
