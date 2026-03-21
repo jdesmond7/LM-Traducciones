@@ -18,6 +18,7 @@ const NavbarComponent = (() => {
             href: 'index.html',
         },
         links: [
+            { label: 'Inicio',    href: 'index.html' },
             { label: 'Sobre mí',  href: 'sobre-mi.html' },
             { label: 'Servicios', href: 'servicios.html' },
             { label: 'Tarifas',   href: 'tarifas.html' },
