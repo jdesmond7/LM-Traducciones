@@ -1,3 +1,6 @@
+# Editor lock files
+*~lock~
+
 .DS_Store
 .env
 node_modules

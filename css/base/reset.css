@@ -18,9 +18,9 @@
 
     /* Colors - Elegant Navy & Gold palette */
     --color-primary: var(--golden-chestnut-600);
-    --color-primary-light: var(--golden-chestnut-400);
+    --color-primary-light: var(--golden-chestnut-500);
     --color-primary-dark: var(--golden-chestnut-950);
-    --color-accent: var(--golden-chestnut-300);
+    --color-accent: var(--golden-chestnut-400);
     --color-accent-light: var(--golden-chestnut-200);
     --color-accent-dark: var(--golden-chestnut-700);
     
