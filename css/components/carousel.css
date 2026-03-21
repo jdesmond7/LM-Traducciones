@@ -1,8 +1,8 @@
 /* ================================================
-   COMPONENTS: Logo Carousel
+   COMPONENTS: Hero language marquee (scroll infinito)
    ================================================ */
 
-.logo-carousel {
+.language-marquee {
     background: var(--color-primary-dark);
     padding: var(--space-lg) 0;
     overflow: hidden;
@@ -13,28 +13,32 @@
     z-index: 2;
 }
 
-.logo-track {
+.language-marquee__track {
     display: flex;
-    align-items: center;
-    gap: var(--space-2xl);
-    animation: logoScroll 60s linear infinite;
     width: max-content;
+    align-items: center;
+    animation: languageMarqueeScroll 90s linear infinite;
 }
 
-.logo-track img {
-    height: 40px;
-    width: auto;
-    object-fit: contain;
-    filter: brightness(0) invert(1);
-    opacity: 0.7;
-    transition: opacity var(--transition-base);
+.language-marquee__segment {
+    display: flex;
+    flex-shrink: 0;
+    align-items: center;
+    gap: var(--space-xl);
+    padding-right: var(--space-xl);
 }
 
-.logo-track img:hover {
-    opacity: 1;
+.language-marquee__unit {
+    font-family: var(--font-body);
+    font-size: clamp(0.8125rem, 1.5vw, 0.9375rem);
+    font-weight: 500;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.82);
+    white-space: nowrap;
 }
 
-@keyframes logoScroll {
+@keyframes languageMarqueeScroll {
     0% {
         transform: translateX(0);
     }
@@ -43,3 +47,12 @@
     }
 }
 
+@media (prefers-reduced-motion: reduce) {
+    .language-marquee__track {
+        animation: none;
+    }
+
+    .language-marquee__segment:last-child {
+        display: none;
+    }
+}
