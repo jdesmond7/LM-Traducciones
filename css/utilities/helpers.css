@@ -141,7 +141,14 @@
     .nav-toggle.active span:nth-child(3) {
         transform: rotate(-45deg) translate(5px, -5px);
     }
-    
+
+    .nav-lang {
+        margin-top: var(--space-md);
+        padding-top: var(--space-md);
+        border-top: 1px solid var(--color-gray-200);
+        width: 100%;
+    }
+
     .hero {
         padding-top: calc(112px + var(--space-2xl));
         min-height: 72vh;
@@ -161,6 +168,16 @@
         flex-direction: column;
         gap: var(--space-sm);
         text-align: center;
+    }
+}
+
+@media (max-width: 560px) {
+    .contact-methods.contact-info-direct {
+        grid-template-columns: 1fr;
+    }
+
+    .contact-methods.contact-info-professional-links {
+        grid-template-columns: 1fr;
     }
 }
 

@@ -47,7 +47,7 @@ function initMobileMenu() {
     const menu = document.getElementById('nav-menu');
     if (!toggle || !menu) return;
 
-    const links = menu.querySelectorAll('.nav-link');
+    const links = menu.querySelectorAll('.nav-link, .nav-lang-link');
 
     toggle.addEventListener('click', () => {
         toggle.classList.toggle('active');
@@ -108,23 +108,30 @@ function initScrollAnimations() {
 function initLanguageToggle() {
     const langBtns = document.querySelectorAll('.lang-btn');
     const translatableElements = document.querySelectorAll('[data-es][data-en]');
+    const pageLang = document.documentElement.lang === 'en' ? 'en' : 'es';
+
+    function applyLang(lang) {
+        translatableElements.forEach(el => {
+            const text = el.dataset[lang];
+            if (text) el.textContent = text;
+        });
+        langBtns.forEach(b => b.classList.toggle('active', b.dataset.lang === lang));
+    }
+
+    applyLang(pageLang);
 
     langBtns.forEach(btn => {
         btn.addEventListener('click', () => {
             const lang = btn.dataset.lang;
-
-            // Update active state
             langBtns.forEach(b => b.classList.remove('active'));
             btn.classList.add('active');
 
-            // Translate elements
             translatableElements.forEach(el => {
                 const text = el.dataset[lang];
                 if (text) {
-                    // Animate the transition
                     el.style.opacity = '0';
                     el.style.transform = 'translateY(-5px)';
-                    
+
                     setTimeout(() => {
                         el.textContent = text;
                         el.style.opacity = '1';
@@ -135,7 +142,6 @@ function initLanguageToggle() {
         });
     });
 
-    // Add transition styles dynamically
     translatableElements.forEach(el => {
         el.style.transition = 'opacity 0.15s ease, transform 0.15s ease';
     });
@@ -177,6 +183,9 @@ function initContactForm() {
     const form = document.getElementById('contact-form');
     if (!form) return;
 
+    const isEn = (document.documentElement.getAttribute('lang') || 'es').toLowerCase().startsWith('en');
+    const assetPrefix = isEn ? '../' : '';
+
     function ensureSuccessModal() {
         let modal = document.getElementById('success-modal');
         if (!modal) {
@@ -184,17 +193,21 @@ function initContactForm() {
             modal.className = 'success-modal';
             modal.id = 'success-modal';
             modal.setAttribute('aria-hidden', 'true');
+            const modalTitle = isEn ? 'Request sent successfully' : 'Solicitud enviada correctamente';
+            const modalMessage = isEn
+                ? 'Thank you for your request. I will review it shortly and you will receive a response within 24 to 48 hours. Please watch your inbox.'
+                : 'Gracias por tu solicitud. La revisare a la brevedad y recibiras una respuesta en un plazo de 24 a 48 horas. Por favor, mantente al pendiente de tu correo electronico.';
+            const modalBtn = isEn ? 'OK' : 'Entendido';
             modal.innerHTML = `
                 <div class="success-modal__backdrop" data-close-success-modal></div>
                 <div class="success-modal__dialog" role="dialog" aria-modal="true" aria-labelledby="success-modal-title">
                     <div id="success-animation" class="success-modal__animation" aria-hidden="true"></div>
-                    <h3 id="success-modal-title" class="success-modal__title">Solicitud enviada correctamente</h3>
+                    <h3 id="success-modal-title" class="success-modal__title">${modalTitle}</h3>
                     <p class="success-modal__message">
-                        Gracias por tu solicitud. La revisare a la brevedad y recibiras una respuesta en un plazo de 24 a 48 horas.
-                        Por favor, mantente al pendiente de tu correo electronico.
+                        ${modalMessage}
                     </p>
                     <button type="button" class="btn btn-primary btn-full success-modal__button" id="success-modal-close">
-                        Entendido
+                        ${modalBtn}
                     </button>
                 </div>
             `;
@@ -203,7 +216,7 @@ function initContactForm() {
 
         if (!window.lottie && !document.querySelector('script[data-lottie-loader="true"]')) {
             const lottieScript = document.createElement('script');
-            lottieScript.src = 'js/vendor/lottie.min.js';
+            lottieScript.src = `${assetPrefix}js/vendor/lottie.min.js`;
             lottieScript.setAttribute('data-lottie-loader', 'true');
             document.body.appendChild(lottieScript);
         }
@@ -252,7 +265,7 @@ function initContactForm() {
                 renderer: 'svg',
                 loop: false,
                 autoplay: false,
-                path: 'js/Success.json'
+                path: `${assetPrefix}js/Success.json`
             });
         }
 
