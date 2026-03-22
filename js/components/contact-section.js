@@ -24,9 +24,9 @@
               platforms:
                   'Find me on professional platforms to verify my credentials and learn more about my academic and professional background.',
               qrIntro:
-                  'To verify the authenticity and validity of my authorization as a sworn translator, scan the following QR code:',
+                  'To verify the authenticity and validity of my authorization as a Court-Certified Translator, scan the following QR code:',
               qrAlt:
-                  'QR code to verify the authenticity and validity of the sworn translator authorization',
+                  'QR code to verify the authenticity and validity of the Court-Certified Translator authorization',
               waLabel: 'WhatsApp, open chat at 81 1600 9783',
               emailLabel: 'Send email to maleni.uribe.mtz@gmail.com',
               linkedInLabel: "LinkedIn, Liz Maleni Uribe's profile",

@@ -40,6 +40,34 @@ function escapeHtml(value) {
         .replace(/'/g, '&#39;');
 }
 
+/** Evita saltos de línea y caracteres que rompen cabeceras MIME o el nombre del adjunto. */
+function safeAttachmentFilename(name) {
+    const base = String(name || 'adjunto')
+        .replace(/[\r\n\x00-\x1f"<>|?*\\]+/g, '_')
+        .trim();
+    return base.slice(0, 200) || 'adjunto';
+}
+
+/**
+ * Validación básica para To/Cc/Reply-To. Si Reply-To es inválido, no se envía esa cabecera
+ * (Gmail puede generar rebotes raros con direcciones mal formadas).
+ */
+function isValidEmailAddress(value) {
+    if (!value || typeof value !== 'string') return false;
+    const s = value.trim();
+    if (s.length < 5 || s.length > 254) return false;
+    if (/\s|[<>[\]]/.test(s)) return false;
+    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(s);
+}
+
+function parseEmailList(raw) {
+    if (!raw || typeof raw !== 'string') return [];
+    return raw
+        .split(/[,;]/)
+        .map((p) => p.trim())
+        .filter(isValidEmailAddress);
+}
+
 function getTransporter() {
     const { SMTP_HOST, SMTP_PORT, SMTP_USER, SMTP_PASS } = process.env;
 
@@ -99,11 +127,26 @@ app.post('/api/contact', (req, res) => {
             return replyError(400);
         }
 
-        const mailTo = process.env.MAIL_TO;
-        if (!mailTo) {
-            console.error('MAIL_TO no configurado en .env');
+        if (!isValidEmailAddress(email)) {
+            return replyError(400);
+        }
+
+        const mailToList = parseEmailList(process.env.MAIL_TO || '');
+        if (mailToList.length === 0) {
+            console.error('MAIL_TO no configurado o no es un correo válido en .env');
             return replyError(500);
         }
+
+        const ccList = parseEmailList(process.env.MAIL_CC || '');
+        const smtpUser = (process.env.SMTP_USER || '').trim();
+        if (!isValidEmailAddress(smtpUser)) {
+            console.error('SMTP_USER no es un correo válido en .env');
+            return replyError(500);
+        }
+
+        // Gmail exige que el remitente sea esa cuenta o un alias "Enviar correo como" verificado.
+        const fromRaw = (process.env.MAIL_FROM || '').trim();
+        const fromHeader = fromRaw && isValidEmailAddress(fromRaw) ? fromRaw : smtpUser;
 
         const filesListHtml = attachments
             .map((file) => `<li>${escapeHtml(file.originalname)}</li>`)
@@ -112,7 +155,7 @@ app.post('/api/contact', (req, res) => {
         const html = `
             <h2>Nueva solicitud de traduccion</h2>
             <p><strong>Nombre completo:</strong> ${escapeHtml(fullName)}</p>
-            <p><strong>Correo electronico:</strong> ${escapeHtml(email)}</p>
+            <p><strong>Correo electrónico:</strong> ${escapeHtml(email)}</p>
             <p><strong>WhatsApp:</strong> ${whatsapp ? escapeHtml(whatsapp) : '-'}</p>
             <p><strong>Mensaje adicional:</strong><br>${escapeHtml(additionalMessage).replace(/\n/g, '<br>')}</p>
             <p><strong>Archivos adjuntos:</strong></p>
@@ -122,7 +165,7 @@ app.post('/api/contact', (req, res) => {
         const text = [
             'Nueva solicitud de traduccion',
             `Nombre completo: ${fullName}`,
-            `Correo electronico: ${email}`,
+            `Correo electrónico: ${email}`,
             `WhatsApp: ${whatsapp || '-'}`,
             `Mensaje adicional: ${additionalMessage}`,
             'Archivos adjuntos:',
@@ -131,20 +174,29 @@ app.post('/api/contact', (req, res) => {
 
         try {
             const transporter = getTransporter();
-            await transporter.sendMail({
-                from: process.env.MAIL_FROM || process.env.SMTP_USER,
-                to: mailTo,
-                cc: process.env.MAIL_CC || undefined,
-                replyTo: email,
-                subject: 'Nueva solicitud de traduccion - Sitio web',
+            const envelopeTo = [...mailToList, ...ccList];
+            const mailOptions = {
+                from: fromHeader,
+                envelope: {
+                    from: smtpUser,
+                    to: envelopeTo
+                },
+                to: mailToList.join(', '),
+                subject: 'Nueva solicitud de traducción — Sitio web',
                 text,
                 html,
                 attachments: attachments.map((file) => ({
-                    filename: file.originalname,
+                    filename: safeAttachmentFilename(file.originalname),
                     content: file.buffer,
-                    contentType: file.mimetype
+                    contentType: file.mimetype || undefined
                 }))
-            });
+            };
+            if (ccList.length) {
+                mailOptions.cc = ccList.join(', ');
+            }
+            mailOptions.replyTo = email.trim();
+
+            await transporter.sendMail(mailOptions);
 
             return replySuccess();
         } catch (mailError) {

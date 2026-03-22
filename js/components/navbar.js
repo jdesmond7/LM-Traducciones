@@ -24,7 +24,7 @@ const NavbarComponent = (() => {
         { label: 'Home', href: 'index.html' },
         { label: 'About', href: 'sobre-mi.html' },
         { label: 'Services', href: 'servicios.html' },
-        { label: 'Rates', href: 'tarifas.html' },
+        { label: 'Fees', href: 'tarifas.html' },
         { label: 'FAQs', href: 'preguntas-frecuentes.html' },
         { label: 'Request translation', href: '#contacto', isCta: true },
     ];
@@ -39,7 +39,7 @@ const NavbarComponent = (() => {
         if (locale === 'en') {
             return {
                 text: 'LM',
-                subtitle: 'Sworn Translator',
+                subtitle: 'Court-Certified Translator',
                 href: 'index.html',
             };
         }

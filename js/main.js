@@ -177,14 +177,59 @@ function initSmoothScroll() {
 }
 
 /**
+ * Absolute URL for POST /api/contact. Root-relative "/api/contact" misses the site base on
+ * subpath deploys (e.g. GitHub Pages /repo/en/...) so English pages would post to the wrong path.
+ */
+function getContactApiUrl() {
+    const { origin, pathname } = window.location;
+    const enIdx = pathname.indexOf('/en/');
+    if (enIdx !== -1) {
+        return `${origin}${pathname.slice(0, enIdx)}/api/contact`;
+    }
+    const dir = pathname.replace(/\/[^/]*$/, '');
+    if (dir && dir !== '/') {
+        return `${origin}${dir}/api/contact`;
+    }
+    return `${origin}/api/contact`;
+}
+
+/**
  * Contact form handling
  */
 function initContactForm() {
     const form = document.getElementById('contact-form');
     if (!form) return;
 
+    const contactPostUrl = getContactApiUrl();
+    form.setAttribute('action', contactPostUrl);
+
     const isEn = (document.documentElement.getAttribute('lang') || 'es').toLowerCase().startsWith('en');
     const assetPrefix = isEn ? '../' : '';
+    const msgNoFilesSelected = isEn ? 'No files selected.' : 'No hay archivos seleccionados.';
+
+    function msgFilesReady(count) {
+        if (isEn) {
+            return count === 1 ? '1 file ready to send.' : `${count} files ready to send.`;
+        }
+        return `${count} archivo(s) listo(s) para enviar.`;
+    }
+
+    const fileRemoveLabel = isEn ? 'Remove' : 'Eliminar';
+    const msgSubmitFailed = isEn
+        ? 'Unable to send the request. Please try again.'
+        : 'No se pudo enviar la solicitud. Intenta nuevamente.';
+    const msgSubmitNetwork = isEn
+        ? 'Could not reach the server. For local testing, run npm start and open the site at http://localhost:3000 (not Live Server or file://).'
+        : 'No se pudo conectar con el servidor. En local, ejecuta npm start y abre http://localhost:3000 (no uses Live Server ni file://).';
+    const msgSubmitBadRequest = isEn
+        ? 'The form could not be processed. Use PDF, DOC, DOCX, JPG, or PNG only, up to 3 files and 10MB total.'
+        : 'No se pudo procesar el envío. Solo PDF, DOC, DOCX, JPG o PNG; máximo 3 archivos y 10MB en total.';
+    const msgSubmitServerError = isEn
+        ? 'The server could not send your request (e.g. email not configured on the server). Try again later or use WhatsApp or email.'
+        : 'El servidor no pudo enviar tu solicitud (p. ej. correo no configurado). Intenta más tarde o usa WhatsApp o correo.';
+    const msgSubmitSuccessFeedback = isEn
+        ? 'Request sent successfully. We will review your information shortly.'
+        : 'Solicitud enviada correctamente. Revisaremos tu informacion pronto.';
 
     function ensureSuccessModal() {
         let modal = document.getElementById('success-modal');
@@ -196,7 +241,7 @@ function initContactForm() {
             const modalTitle = isEn ? 'Request sent successfully' : 'Solicitud enviada correctamente';
             const modalMessage = isEn
                 ? 'Thank you for your request. I will review it shortly and you will receive a response within 24 to 48 hours. Please watch your inbox.'
-                : 'Gracias por tu solicitud. La revisare a la brevedad y recibiras una respuesta en un plazo de 24 a 48 horas. Por favor, mantente al pendiente de tu correo electronico.';
+                : 'Gracias por tu solicitud. La revisaré a la brevedad y recibirás una respuesta en un plazo de 24 a 48 horas. Por favor, mantente al pendiente de tu correo electrónico.';
             const modalBtn = isEn ? 'OK' : 'Entendido';
             modal.innerHTML = `
                 <div class="success-modal__backdrop" data-close-success-modal></div>
@@ -259,18 +304,22 @@ function initContactForm() {
     function playSuccessAnimationOnce() {
         if (!successAnimationContainer || !window.lottie) return;
 
-        if (!successAnimationInstance) {
-            successAnimationInstance = window.lottie.loadAnimation({
-                container: successAnimationContainer,
-                renderer: 'svg',
-                loop: false,
-                autoplay: false,
-                path: `${assetPrefix}js/Success.json`
-            });
-        }
+        try {
+            if (!successAnimationInstance) {
+                successAnimationInstance = window.lottie.loadAnimation({
+                    container: successAnimationContainer,
+                    renderer: 'svg',
+                    loop: false,
+                    autoplay: false,
+                    path: `${assetPrefix}js/Success.json`
+                });
+            }
 
-        successAnimationInstance.stop();
-        successAnimationInstance.goToAndPlay(0, true);
+            successAnimationInstance.stop();
+            successAnimationInstance.goToAndPlay(0, true);
+        } catch (err) {
+            console.error('[LM] Lottie success animation failed:', err);
+        }
     }
 
     function closeSuccessModal() {
@@ -370,8 +419,8 @@ function initContactForm() {
                     <p class="file-card-name">${file.name}</p>
                     <p class="file-card-size">${bytesToMB(file.size)}</p>
                 </div>
-                <button type="button" class="file-card-remove" data-remove-file-index="${index}" aria-label="Eliminar ${file.name}">
-                    Eliminar
+                <button type="button" class="file-card-remove" data-remove-file-index="${index}" aria-label="${fileRemoveLabel} ${file.name}">
+                    ${fileRemoveLabel}
                 </button>
             `;
             fileList.appendChild(item);
@@ -430,7 +479,7 @@ function initContactForm() {
         syncAttachmentInputs();
         renderFileList();
         updateDropzoneState();
-        setFeedback(`${selectedFiles.length} archivo(s) listo(s) para enviar.`, 'success');
+        setFeedback(msgFilesReady(selectedFiles.length), 'success');
         return true;
     }
 
@@ -495,11 +544,11 @@ function initContactForm() {
         updateDropzoneState();
 
         if (selectedFiles.length === 0) {
-            setFeedback('No hay archivos seleccionados.');
+            setFeedback(msgNoFilesSelected);
             return;
         }
 
-        setFeedback(`${selectedFiles.length} archivo(s) listo(s) para enviar.`, 'success');
+        setFeedback(msgFilesReady(selectedFiles.length), 'success');
     });
 
     form.addEventListener('submit', async (e) => {
@@ -522,15 +571,16 @@ function initContactForm() {
 
         // Keep the optional message field meaningful even when left blank.
         if (!optionalMessageInput.value.trim()) {
-            optionalMessageInput.value = 'Sin mensaje adicional.';
+            optionalMessageInput.value = isEn ? 'No additional message.' : 'Sin mensaje adicional.';
         }
 
         setSubmitLoadingState(true);
 
+        let response;
         try {
             const formData = new FormData(form);
-            const [response] = await Promise.all([
-                fetch(form.action, {
+            [response] = await Promise.all([
+                fetch(contactPostUrl, {
                     method: 'POST',
                     body: formData,
                     headers: {
@@ -539,26 +589,47 @@ function initContactForm() {
                 }),
                 new Promise(resolve => setTimeout(resolve, MIN_SPINNER_MS))
             ]);
-
-            if (!response.ok) {
-                throw new Error('Error al enviar formulario');
-            }
-
-            setFeedback('Solicitud enviada correctamente. Revisaremos tu informacion pronto.', 'success');
-            form.reset();
-            selectedFiles = [];
-            syncAttachmentInputs();
-            renderFileList();
-            updateDropzoneState();
-            openSuccessModal();
-        } catch (error) {
-            setFeedback('No se pudo enviar la solicitud. Intenta nuevamente.', 'error');
-        } finally {
+        } catch (networkErr) {
+            console.error('[LM] Contact form fetch failed:', networkErr);
+            setFeedback(msgSubmitNetwork, 'error');
             setSubmitLoadingState(false);
+            return;
         }
+
+        if (!response.ok) {
+            console.warn('[LM] Contact form HTTP', response.status, contactPostUrl);
+            let errMsg = msgSubmitFailed;
+            if (response.status === 400) {
+                errMsg = msgSubmitBadRequest;
+            } else if (response.status === 404) {
+                errMsg = isEn
+                    ? 'No contact API at this address. Use the Node server (npm start) or deploy with a backend that exposes /api/contact.'
+                    : 'No hay API de contacto en esta dirección. Usa el servidor Node (npm start) o un despliegue con backend en /api/contact.';
+            } else if (response.status >= 500) {
+                errMsg = msgSubmitServerError;
+            }
+            setFeedback(errMsg, 'error');
+            setSubmitLoadingState(false);
+            return;
+        }
+
+        setFeedback(msgSubmitSuccessFeedback, 'success');
+        form.reset();
+        selectedFiles = [];
+        syncAttachmentInputs();
+        renderFileList();
+        updateDropzoneState();
+
+        try {
+            openSuccessModal();
+        } catch (modalErr) {
+            console.error('[LM] Success modal failed:', modalErr);
+        }
+
+        setSubmitLoadingState(false);
     });
 
-    setFeedback('No hay archivos seleccionados.');
+    setFeedback(msgNoFilesSelected);
 
     updateDropzoneState();
 
